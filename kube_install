@@ -1,0 +1,28 @@
+ cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+    9  net.bridge.bridge-nf-call-ip6tables = 1
+   10  net.bridge.bridge-nf-call-iptables = 1
+   11  EOF
+   12  sudo sysctl --system
+   13  sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+   14  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+   15  cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   16  deb https://apt.kubernetes.io/ kubernetes-xenial main
+   17  EOF
+   18  sudo apt-get update
+   19  sudo apt-get install -y kubelet kubeadm kubectl
+   20  sudo apt-mark hold kubelet kubeadm kubectl
+   21  systemctl daemon-reload
+   22  systemctl restart kubelet
+   23  exit
+   24  kubeadm init
+   25  kubeadm init --ignore-preflight-errors=all
+   26  sudo chmod 666 /var/run/docker.sock
+ 43  sudo apt-get update
+   44  sudo apt-get install docker.io
+   45  docker ––version
+52  sudo systemctl enable docker
+   53  sudo systemctl status docker
+   54  sudo systemctl start docker
+   55  sudo systemctl status docker
+   56  kubeadm init --ignore-preflight-errors=all
+   57  sudo kubeadm init --ignore-preflight-errors=all
